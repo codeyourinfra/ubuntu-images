@@ -1,21 +1,20 @@
 #!/bin/bash
 
-teardown()
-{
-	vagrant destroy jenkins -f
-	rm -rf .vagrant/ ubuntu-xenial-16.04-cloudimg-console.log
-}
+echo "Updating the vagrant box, if necessary"
+vagrant box update
 
-# turn on the jenkins server
-vagrant up jenkins
+echo "Bootstrapping the jenkins server"
+vagrant up --no-provision
 
-# show information about the jenkins server
-ansible jenkins -i hosts -m shell -a "java -version"
-ansible jenkins -i hosts -m shell -a "java -jar /usr/share/jenkins/jenkins.war --version"
+echo "Provisioning the server with the latest Oracle Java 8 and Jenkins"
+vagrant provision
 
-# bake the jenkins server
-vagrant package jenkins --output jenkins.box
+echo "Baking the jenkins server"
+vagrant package --output jenkins.box
 
-# turn off the jenkins server and exit
-teardown
+echo "Removing the jenkins server"
+vagrant destroy -f
+
+echo "Cleaning up everything and exiting"
+rm -rf .vagrant/ ubuntu-xenial-16.04-cloudimg-console.log roles/
 exit 0
