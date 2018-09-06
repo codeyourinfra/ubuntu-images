@@ -1,2 +1,3 @@
 ---
 - src: codeyourinfra.grafana
+- src: codeyourinfra.influxdb

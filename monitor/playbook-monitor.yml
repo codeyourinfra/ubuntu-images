@@ -3,6 +3,7 @@
   become: yes
   roles:
   - codeyourinfra.grafana
+  - codeyourinfra.influxdb
   tasks:
   - name: Install required Ubuntu packages
     apt:
@@ -13,10 +14,6 @@
       - python3-pip
     tags:
       - requirements-installation
-  - name: Install latest InfluxDB
-    import_tasks: influxdb-installation.yml
-    tags:
-      - influxdb-installation
   - name: Install latest Ansible
     import_tasks: ansible-installation.yml
     tags:
