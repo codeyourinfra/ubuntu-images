@@ -1,3 +1,4 @@
 ---
 - src: codeyourinfra.grafana
 - src: codeyourinfra.influxdb
+- src: codeyourinfra.ansible

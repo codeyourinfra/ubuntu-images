@@ -1,20 +1,33 @@
 ---
 - hosts: monitor
   become: yes
+
   roles:
   - codeyourinfra.grafana
   - codeyourinfra.influxdb
+  - codeyourinfra.ansible
+
   tasks:
-  - name: Install required Ubuntu packages
+  - name: Install curl
     apt:
-      name: '{{item}}'
-      update_cache: yes
-    loop:
-      - apt-transport-https
-      - python3-pip
-    tags:
-      - requirements-installation
-  - name: Install latest Ansible
-    import_tasks: ansible-installation.yml
-    tags:
-      - ansible-installation
+      name: curl
+  - name: Get Grafana version
+    shell: curl -s localhost:3000/login | grep span warn=no
+    register: grafana_version_result
+  - name: Show Grafana version
+    debug:
+      msg: "{{ grafana_version_result.stderr_lines[0] | regex_search('(v[\\d.]+)') }}"
+  
+  - name: Get InfluxDB version
+    shell: influxd version
+    register: influxdb_version_result
+  - name: Show InfluxDB version
+    debug:
+      msg: "{{ influxdb_version_result.stderr_lines[0] | regex_search('(v[\\d.]+)') }}"
+  
+  - name: Get Ansible version
+    shell: ansible --version
+    register: ansible_version_result
+  - name: Show Ansible version
+    debug:
+      msg: "{{ ansible_version_result.stderr_lines[0] | regex_search('([\\d.]+)') }}"
