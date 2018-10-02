@@ -16,18 +16,18 @@
     register: grafana_version_result
   - name: Show Grafana version
     debug:
-      msg: "{{ grafana_version_result.stderr_lines[0] | regex_search('(v[\\d.]+)') }}"
+      msg: "{{ grafana_version_result.stdout_lines[0] | regex_search('(v[\\d.]+)') }}"
   
   - name: Get InfluxDB version
     shell: influxd version
     register: influxdb_version_result
   - name: Show InfluxDB version
     debug:
-      msg: "{{ influxdb_version_result.stderr_lines[0] | regex_search('(v[\\d.]+)') }}"
+      msg: "{{ influxdb_version_result.stdout_lines[0] | regex_search('(v[\\d.]+)') }}"
   
   - name: Get Ansible version
     shell: ansible --version
     register: ansible_version_result
   - name: Show Ansible version
     debug:
-      msg: "{{ ansible_version_result.stderr_lines[0] | regex_search('([\\d.]+)') }}"
+      msg: "{{ ansible_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"

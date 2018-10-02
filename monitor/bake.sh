@@ -1,22 +1,20 @@
 #!/bin/bash
 
-teardown()
-{
-	vagrant destroy monitor -f
-	rm -rf .vagrant/ ubuntu-xenial-16.04-cloudimg-console.log
-}
+echo "Updating the vagrant box, if necessary"
+vagrant box update
 
-# turn on the monitor server
-vagrant up monitor
+echo "Bootstrapping the monitor server"
+vagrant up --no-provision
 
-# show information about the monitor server
-ansible monitor -i hosts -m shell -a "/usr/bin/influxd version"
-ansible monitor -i hosts -m shell -a "curl -s localhost:3000/login | grep span warn=no"
-ansible monitor -i hosts -m shell -a "ansible --version"
+echo "Provisioning the server with the latest InfluxDB, Grafana and Ansible"
+vagrant provision
 
-# bake the monitor server
-vagrant package monitor --output monitor.box
+echo "Baking the monitor server"
+vagrant package --output monitor.box
 
-# turn off the monitor server and exit
-teardown
+echo "Removing the monitor server"
+vagrant destroy -f
+
+echo "Cleaning up everything and exiting"
+rm -rf .vagrant/ ubuntu-xenial-16.04-cloudimg-console.log roles/
 exit 0
