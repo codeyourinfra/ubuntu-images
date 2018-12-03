@@ -20,7 +20,7 @@ UBUNTU_VERSION=$(cat ubuntu-version.txt)
 JAVA_VERSION=$(cat java-version.txt)
 JNEKINS_VERSION=$(cat jenkins-version.txt)
 VERSION_DESCRIPTION="Built from $UBUNTU_VERSION and provisioned with Oracle JDK $JAVA_VERSION and Jenkins $JENKINS_VERSION."
-vagrant cloud version create codeyourinfra/jenkins $BOX_VERSION --description $VERSION_DESCRIPTION
+vagrant cloud version create -d $VERSION_DESCRIPTION codeyourinfra/jenkins $BOX_VERSION
 
 echo "Removing the jenkins server"
 vagrant destroy -f
