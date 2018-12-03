@@ -18,7 +18,7 @@ rm -f $BOX_FILE && vagrant package --output $BOX_FILE
 echo "Creating the new box version in Vagrant Cloud"
 UBUNTU_VERSION=$(cat ubuntu-version.txt)
 JAVA_VERSION=$(cat java-version.txt)
-JNEKINS_VERSION=$(cat jenkins-version.txt)
+JENKINS_VERSION=$(cat jenkins-version.txt)
 VERSION_DESCRIPTION="Built from $UBUNTU_VERSION and provisioned with Oracle JDK $JAVA_VERSION and Jenkins $JENKINS_VERSION."
 vagrant cloud version create -d $VERSION_DESCRIPTION codeyourinfra/jenkins $BOX_VERSION
 
