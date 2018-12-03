@@ -2,18 +2,37 @@
 - hosts: jenkins
   become: yes
   gather_facts: no
+
   roles:
   - codeyourinfra.jenkins
+
   tasks:
   - name: Get Java version
     shell: java -version
     register: java_version_result
+  - name: Set Java version fact
+    set_fact:
+      java_version: "{{ java_version_result.stderr_lines[0] | regex_search('([\\d.]+_\\d*)') }}"
   - name: Show Java version
     debug:
-      msg: "{{ java_version_result.stderr_lines[0] | regex_search('([\\d.]+_\\d*)') }}"
+      msg: "{{ java_version }}"
+  - name: Store java version
+    copy:
+      dest: java-version.txt
+      content: "{{ java_version }}"
+    delegate_to: localhost
+
   - name: Get Jenkins version
     shell: java -jar /usr/share/jenkins/jenkins.war --version
     register: jenkins_version_result
+  - name: Set Jenkins version fact
+    set_fact:
+      jenkins_version: "{{ jenkins_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
   - name: Show Jenkins version
     debug:
-      msg: "{{ jenkins_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
+      msg: "{{ jenkins_version }}"
+  - name: Store jenkins version
+    copy:
+      dest: jenkins-version.txt
+      content: "{{ jenkins_version }}"
+    delegate_to: localhost
