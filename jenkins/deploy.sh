@@ -14,6 +14,6 @@ if [ $STATUS_CODE -eq 200 ]; then
     exit 1
 fi
 
-curl -H "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" -H "Content-Type: application/json" -d '{"version": {"version": "$BOX_VERSION", "description": "A new version"}}' $BOX_VERSIONS_ENDPOINT
+curl -H "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" -H "Content-Type: application/json" -d '{"version": {"version": "'"$BOX_VERSION"'", "description": "A new version"}}' $BOX_VERSIONS_ENDPOINT
 echo "Version $BOX_VERSION created"
 exit 0
