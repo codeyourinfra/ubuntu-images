@@ -7,6 +7,18 @@
   - codeyourinfra.jenkins
 
   tasks:
+  - name: Get Ubuntu version
+    shell: lsb_release -ds
+    register: ubuntu_version_result
+  - name: Show Ubuntu version
+    debug:
+      msg: "{{ ubuntu_version_result.stdout_lines[0] }}"
+  - name: Store Ubuntu version
+    copy:
+      dest: ubuntu-version.txt
+      content: "{{ ubuntu_version_result.stdout_lines[0] }}"
+    delegate_to: localhost
+
   - name: Get Java version
     shell: java -version
     register: java_version_result
