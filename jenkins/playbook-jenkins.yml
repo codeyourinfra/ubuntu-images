@@ -48,3 +48,6 @@
       dest: jenkins-version.txt
       content: "{{ jenkins_version }}"
     delegate_to: localhost
+
+  - name: Minimize disk space
+    script: minimize.sh
