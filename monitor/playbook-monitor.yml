@@ -46,14 +46,14 @@
     register: ansible_version_result
   - name: Set Ansible version fact
     set_fact:
-      ansible_version: "{{ ansible_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
+      monitor_ansible_version: "{{ ansible_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
   - name: Show Ansible version
     debug:
-      msg: "{{ ansible_version }}"
+      msg: "{{ monitor_ansible_version }}"
   - name: Store Ansible version
     copy:
       dest: ansible-version.txt
-      content: "{{ ansible_version }}"
+      content: "{{ monitor_ansible_version }}"
     delegate_to: localhost
 
   - name: Minimize disk space
