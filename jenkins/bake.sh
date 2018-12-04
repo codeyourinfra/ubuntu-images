@@ -28,5 +28,5 @@ echo "Removing the jenkins server"
 vagrant destroy -f
 
 echo "Cleaning up everything and exiting"
-rm -rf .vagrant/ ubuntu-*-cloudimg-console.log roles/ *-version.txt box-update-output.txt
+rm -rf .vagrant ubuntu-*-cloudimg-console.log roles *-version.txt box-update-output.txt jenkins-*.box
 exit 0
