@@ -50,4 +50,4 @@
     delegate_to: localhost
 
   - name: Minimize disk space
-    script: minimize.sh
+    script: ../minimize.sh
