@@ -14,20 +14,44 @@
   - name: Get Grafana version
     shell: curl -s localhost:3000/login | grep span warn=no
     register: grafana_version_result
+  - name: Set Grafana version fact
+    set_fact:
+      grafana_version: "{{ grafana_version_result.stdout_lines[0] | regex_search('(v[\\d.]+)') }}"
   - name: Show Grafana version
     debug:
-      msg: "{{ grafana_version_result.stdout_lines[0] | regex_search('(v[\\d.]+)') }}"
+      msg: "{{ grafana_version }}"
+  - name: Store Grafana version
+    copy:
+      dest: grafana-version.txt
+      content: "{{ grafana_version }}"
+    delegate_to: localhost
   
   - name: Get InfluxDB version
     shell: influxd version
     register: influxdb_version_result
+  - name: Set InfluxDB version fact
+    set_fact:
+      influxdb_version: "{{ influxdb_version_result.stdout_lines[0] | regex_search('(v[\\d.]+)') }}"
   - name: Show InfluxDB version
     debug:
-      msg: "{{ influxdb_version_result.stdout_lines[0] | regex_search('(v[\\d.]+)') }}"
+      msg: "{{ influxdb_version }}"
+  - name: Store InfluxDB version
+    copy:
+      dest: influxdb-version.txt
+      content: "{{ influxdb_version }}"
+    delegate_to: localhost
   
   - name: Get Ansible version
     shell: ansible --version
     register: ansible_version_result
+  - name: Set Ansible version fact
+    set_fact:
+      ansible_version: "{{ ansible_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
   - name: Show Ansible version
     debug:
-      msg: "{{ ansible_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
+      msg: "{{ ansible_version }}"
+  - name: Store Ansible version
+    copy:
+      dest: ansible-version.txt
+      content: "{{ ansible_version }}"
+    delegate_to: localhost
