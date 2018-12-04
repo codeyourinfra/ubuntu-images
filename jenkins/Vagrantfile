@@ -6,6 +6,9 @@ Vagrant.configure("2") do |config|
     jenkins.vm.box = "ubuntu/bionic64"
     jenkins.vm.network "private_network", ip: "192.168.33.10"
     jenkins.ssh.insert_key = false
+    jenkins.vm.provider "virtualbox" do |vb|
+      vb.customize ['modifyvm', :id, '--uartmode1', 'disconnected']
+    end
     jenkins.vm.provision "ansible" do |ansible|
       ansible.galaxy_role_file = "requirements.yml"
       ansible.playbook = "playbook-jenkins.yml"
