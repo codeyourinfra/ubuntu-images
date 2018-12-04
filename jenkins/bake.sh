@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Requires VAGRANT_CLOUD_TOKEN
 BOX_VERSION=$(date '+%Y%m%d.0.0')
 BOX_FILE=jenkins-$BOX_VERSION.box
 
