@@ -16,5 +16,5 @@ echo "Removing the monitor server"
 vagrant destroy -f
 
 echo "Cleaning up everything and exiting"
-rm -rf .vagrant/ ubuntu-xenial-16.04-cloudimg-console.log roles/
+rm -rf .vagrant ubuntu-*-cloudimg-console.log roles
 exit 0
