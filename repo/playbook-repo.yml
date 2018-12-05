@@ -2,6 +2,7 @@
 - hosts: repo
   become: yes
   gather_facts: no
+
   tasks:
   - name: Install Apache 2
     apt:
@@ -13,3 +14,33 @@
       dest: "/var/www/html/{{item.dest}}"
     with_items: [{"url": "https://archive.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz", "dest": "server1.tar.gz"},
                  {"url": "https://archive.apache.org/dist/ant/binaries/apache-ant-1.10.1-bin.zip", "dest": "server2.zip"}]
+
+  - name: Get Ubuntu version
+    shell: lsb_release -ds
+    register: ubuntu_version_result
+  - name: Show Ubuntu version
+    debug:
+      msg: "{{ ubuntu_version_result.stdout_lines[0] }}"
+  - name: Store Ubuntu version
+    copy:
+      dest: ubuntu-version.txt
+      content: "{{ ubuntu_version_result.stdout_lines[0] }}"
+    delegate_to: localhost
+
+  - name: Get Apache 2 version
+    shell: apache2 -v
+    register: apache2_version_result
+  - name: Set Apache 2 version fact
+    set_fact:
+      apache2_version: "{{ apache2_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
+  - name: Show Apache 2 version
+    debug:
+      msg: "{{ apache2_version }}"
+  - name: Store Apache 2 version
+    copy:
+      dest: apache2-version.txt
+      content: "{{ apache2_version }}"
+    delegate_to: localhost
+
+  - name: Minimize disk space
+    script: ../minimize.sh

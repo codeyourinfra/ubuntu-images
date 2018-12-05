@@ -3,9 +3,12 @@
 
 Vagrant.configure("2") do |config|
   config.vm.define "repo" do |repo|
-    repo.vm.box = "ubuntu/xenial64"
+    repo.vm.box = "ubuntu/bionic64"
     repo.vm.network "private_network", ip: "192.168.33.10"
     repo.ssh.insert_key = false
+    repo.vm.provider "virtualbox" do |vb|
+      vb.customize ['modifyvm', :id, '--uartmode1', 'disconnected']
+    end
     repo.vm.provision "ansible" do |ansible|
       ansible.playbook = "playbook-repo.yml"
       ansible.host_vars = {
