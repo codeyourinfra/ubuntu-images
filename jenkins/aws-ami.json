@@ -26,6 +26,9 @@
       "ami_groups": [
         "all"
       ],
+      "ami_regions": [
+        "eu-west-2"
+      ],
       "force_deregister": "true",
       "force_delete_snapshot": "true"
     }
@@ -33,7 +36,7 @@
   "provisioners": [
     {
       "type": "shell-local",
-      "command": "ansible-galaxy install -r requirements.yml"
+      "command": "ansible-galaxy install -r requirements.yml -p roles"
     },
     {
       "type": "ansible",
@@ -43,6 +46,10 @@
         "--extra-vars",
         "ansible_python_interpreter=/usr/bin/python3"
       ]
+    },
+    {
+      "type": "shell-local",
+      "command": "rm -rf roles *-version.txt"
     }
   ]
 }
