@@ -26,6 +26,9 @@
       "ami_groups": [
         "all"
       ],
+      "ami_regions": [
+        "eu-west-2"
+      ],
       "force_deregister": "true",
       "force_delete_snapshot": "true"
     }
