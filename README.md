@@ -4,7 +4,7 @@
 
 The [Codeyourinfra project](https://github.com/codeyourinfra/codeyourinfra) brings solutions for common sysadmin problems. The proposed solutions use Ubuntu images previously built. In this repository you'll find all the code developed for automatically building the Codeyourinfra [Vagrant boxes](https://www.vagrantup.com/docs/boxes.html) and the Codeyourinfra [AWS AMIs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html).
 
-During the building process, a temporary VM is initialized from a base image, and then provisioned by [Ansible](https://www.ansible.com). The same Ansible playbook is used to provision the VM initialized for building the Vagrant box and for building the AWS AMI.
+During the building process, a temporary VM is initialized from a base image, and then provisioned by [Ansible](https://www.ansible.com). The same Ansible playbook is used to provision both the VM initialized for building the Vagrant box and the one for building the AWS AMI.
 
 ## Vagrant boxes
 
