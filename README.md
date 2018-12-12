@@ -18,8 +18,19 @@ The *image_id* parameter can be set to **jenkins**, **monitor** or **repo**. In 
 
 The Codeyourinfra AWS AMIs are currently available in 2 regions: South America - São Paulo (**sa-east-1**) and Europe - London (**eu-west-2**). They can be found by using the [AWS CLI tool](https://aws.amazon.com/cli), executing the following command (replace the *region* parameter with the appropriate value):
 
-`aws ec2 describe-images --owners 334305766942 --region <region>`
+```bash
+aws ec2 describe-images --owners 334305766942 --region <region> \
+--query 'Images[*].[Name,ImageId]' --output text
+```
 
-Their building processes are performed by [Packer](https://www.packer.io). Get the right credentials through [AWS IAM](https://aws.amazon.com/iam) before building the images. You must set the environment variables *AWS_ACCESS_KEY_ID* and *AWS_SECRET_ACCESS_KEY* in order to run, from the image folder:
+Their building processes are performed by [Packer](https://www.packer.io). During the process, Packer finds the latest available [Canonical](https://www.canonical.com) Ubuntu 18.04 LTS in the region *sa-east-1*, to be used as the base image. With the command below you can find it too:
+
+```bash
+aws ec2 describe-images --owners 099720109477 --region sa-east-1 \
+--filters "Name=name,Values=ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*" \
+--query 'Images[*].[ImageId,CreationDate]' --output text | sort -k2 -r | head -n1
+```
+
+Before building the images, get the right credentials, through the [AWS IAM](https://aws.amazon.com/iam). You must set the environment variables *AWS_ACCESS_KEY_ID* and *AWS_SECRET_ACCESS_KEY* in order to run, from the image folder:
 
 `packer build aws-ami.json`
