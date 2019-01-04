@@ -1,6 +1,6 @@
 # Codeyourinfra baked Ubuntu images
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build status](https://travis-ci.org/codeyourinfra/ubuntu-images.svg?branch=master)](https://travis-ci.org/codeyourinfra/ubuntu-images)
 
 The [Codeyourinfra project](https://github.com/codeyourinfra/codeyourinfra) brings solutions for common sysadmin problems. The proposed solutions use Ubuntu images previously built. In this repository you'll find all the code developed for automatically building the Codeyourinfra [Vagrant boxes](https://www.vagrantup.com/docs/boxes.html) and the Codeyourinfra [AWS AMIs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html).
 
