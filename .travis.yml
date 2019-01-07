@@ -14,5 +14,10 @@ before_script:
 - wget https://releases.hashicorp.com/packer/1.3.3/packer_1.3.3_linux_amd64.zip
 - unzip packer_1.3.3_linux_amd64.zip
 
+env:
+- IMAGE_ID=jenkins
+- IMAGE_ID=monitor
+- IMAGE_ID=repo
+
 script:
-- cd repo && ../packer build aws-ami.json
+- cd $IMAGE_ID && ../packer build aws-ami.json
