@@ -10,6 +10,16 @@ VAGRANT_CLOUD_USER=codeyourinfra
 VAGRANT_CLOUD_BOX=$1
 cd $VAGRANT_CLOUD_BOX
 
+cleanup_and_exit()
+{
+	echo "Removing the $VAGRANT_CLOUD_BOX server"
+    vagrant destroy -f
+
+    echo "Cleaning up everything and exiting"
+    rm -rf .vagrant ubuntu-*-cloudimg-console.log roles *-version.txt box-update-output.txt $BOX_FILE
+    exit $1
+}
+
 BOX_VERSION=$(date '+%Y%m%d.0.0')
 BOX_FILE=$VAGRANT_CLOUD_BOX-$BOX_VERSION.box
 
@@ -22,6 +32,9 @@ vagrant up --no-provision
 
 echo "Provisioning the server with the latest tools"
 vagrant provision
+if [ $? -ne 0 ]; then
+    cleanup_and_exit 1
+fi
 UBUNTU_VERSION=$(cat ubuntu-version.txt)
 
 echo "Baking the $VAGRANT_CLOUD_BOX server"
@@ -32,9 +45,4 @@ echo "Publish the new box version in Vagrant Cloud"
 . ./set-version-description.sh
 vagrant cloud publish $VAGRANT_CLOUD_USER/$VAGRANT_CLOUD_BOX $BOX_VERSION virtualbox $BOX_FILE --version-description "$VERSION_DESCRIPTION" --force --release
 
-echo "Removing the $VAGRANT_CLOUD_BOX server"
-vagrant destroy -f
-
-echo "Cleaning up everything and exiting"
-rm -rf .vagrant ubuntu-*-cloudimg-console.log roles *-version.txt box-update-output.txt $BOX_FILE
-exit 0
+cleanup_and_exit 0
