@@ -7,6 +7,13 @@
   - codeyourinfra.jenkins
 
   tasks:
+  - name: Disable Ubuntu unattended-upgrades during startup, to enable apt-get provisioning.
+    ini_file:
+      path: /lib/systemd/system/apt-daily.timer
+      section: Timer
+      option: Persistent
+      value: false
+
   - name: Get Ubuntu version
     shell: lsb_release -ds
     register: ubuntu_version_result
