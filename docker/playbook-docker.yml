@@ -1,0 +1,74 @@
+---
+- hosts: docker
+  become: true
+
+  roles:
+    - role: codeyourinfra.docker_compose
+
+  tasks:
+    - name: Install required packages
+      apt:
+        name: "{{ item }}"
+        update_cache: yes
+      loop:
+        - language-pack-pt
+        - python3-pip
+
+    - name: Install required python packages
+      pip:
+        name: "{{ item }}"
+      loop:
+        - docker
+        - docker-compose
+
+    - name: Disable Ubuntu unattended-upgrades during startup, to enable apt-get provisioning.
+      ini_file:
+        path: /lib/systemd/system/apt-daily.timer
+        section: Timer
+        option: Persistent
+        value: false
+
+    - name: Get Ubuntu version
+      shell: lsb_release -ds
+      register: ubuntu_version_result
+    - name: Show Ubuntu version
+      debug:
+        msg: "{{ ubuntu_version_result.stdout_lines[0] }}"
+    - name: Store Ubuntu version
+      copy:
+        dest: ubuntu-version.txt
+        content: "{{ ubuntu_version_result.stdout_lines[0] }}"
+      delegate_to: localhost
+
+    - name: Get Docker version
+      shell: docker -v
+      register: docker_version_result
+    - name: Set Docker version fact
+      set_fact:
+        docker_version: "{{ docker_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
+    - name: Show Docker version
+      debug:
+        msg: "{{ docker_version }}"
+    - name: Store Docker version
+      copy:
+        dest: docker-version.txt
+        content: "{{ docker_version }}"
+      delegate_to: localhost
+
+    - name: Get Docker Compose version
+      shell: docker-compose -v
+      register: docker_compose_version_result
+    - name: Set Docker Compose version fact
+      set_fact:
+        docker_compose_version: "{{ docker_compose_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
+    - name: Show Docker Compose version
+      debug:
+        msg: "{{ docker_compose_version }}"
+    - name: Store Docker Compose version
+      copy:
+        dest: docker-compose-version.txt
+        content: "{{ docker_compose_version }}"
+      delegate_to: localhost
+
+    - name: Minimize disk space
+      script: ../minimize.sh

@@ -1,0 +1,55 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "sa-east-1",
+      "source_ami_filter": {
+        "filters": {
+          "name": "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "owners": [
+          "099720109477"
+        ],
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "codeyourinfra/docker",
+      "ami_groups": [
+        "all"
+      ],
+      "ami_regions": [
+        "eu-west-2"
+      ],
+      "force_deregister": "true",
+      "force_delete_snapshot": "true"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "ansible-galaxy install -r requirements.yml -p roles"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./playbook-docker.yml",
+      "host_alias": "docker",
+      "extra_arguments": [
+        "--extra-vars",
+        "ansible_python_interpreter=/usr/bin/python3"
+      ]
+    },
+    {
+      "type": "shell-local",
+      "command": "rm -rf roles *-version.txt"
+    }
+  ]
+}
