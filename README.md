@@ -6,6 +6,22 @@ The [Codeyourinfra project](https://github.com/codeyourinfra/codeyourinfra) brin
 
 During the building process, a temporary VM is initialized from a base image, and then provisioned by [Ansible](https://www.ansible.com). The same Ansible playbook is used to provision both the VM initialized for building the Vagrant box and the one for building the AWS AMI.
 
+The [docker](docker) image's building process, for example, is represented below:
+
+![Baking process](http://www.esign.com.br/baking.png)
+
+## Why baking images
+
+In the article [Choosing between baked and fried provisioning](http://codeyourinfra.today/choosing-between-baked-and-fried-provisioning), some advantages and disadvantages of both approaches are presented. The following table lists their characteristics:
+
+Baked images | Fried provisioning
+------------ | ------------------
+Ready to use | Requires provisioning
+Requires more storage | Requires less storage
+The image is versioned | The provisioning code is versioned
+
+In a nutshell, if you have enough resources to keep your baked images, save time with them. Build your images in advance and use them right away as required.
+
 ## Vagrant boxes
 
 The Codeyourinfra Vagrant boxes are available at Vagrant Cloud, in <https://app.vagrantup.com/codeyourinfra>. The currently used base Vagrant box is the latest [ubuntu/bionic64](https://app.vagrantup.com/ubuntu/boxes/bionic64). Run the following command to build and deploy the new custom Vagrant box to Vagrant Cloud:
