@@ -4,6 +4,13 @@
   gather_facts: no
 
   tasks:
+  - name: Install apt module requirements
+    package:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - python3-apt
+      - aptitude
   - name: Install Apache 2
     apt:
       name: apache2
