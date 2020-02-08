@@ -13,7 +13,7 @@
       path: /lib/systemd/system/apt-daily.timer
       section: Timer
       option: Persistent
-      value: false
+      value: 'false'
 
   - name: Get Ubuntu version
     shell: lsb_release -ds
@@ -27,15 +27,12 @@
       content: "{{ ubuntu_version_result.stdout_lines[0] }}"
     delegate_to: localhost
 
-  - name: Install curl
-    apt:
-      name: curl
   - name: Get Grafana version
-    shell: curl -s localhost:3000/login | grep span warn=no
+    shell: cat /usr/share/grafana/VERSION
     register: grafana_version_result
   - name: Set Grafana version fact
     set_fact:
-      grafana_version: "{{ grafana_version_result.stdout_lines[0] | regex_search('(v[\\d.]+)') }}"
+      grafana_version: "{{ grafana_version_result.stdout_lines[0] | regex_search('([\\d.]+)') }}"
   - name: Show Grafana version
     debug:
       msg: "{{ grafana_version }}"

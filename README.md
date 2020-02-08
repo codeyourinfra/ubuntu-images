@@ -28,7 +28,9 @@ The Codeyourinfra Vagrant boxes are available at Vagrant Cloud, in <https://app.
 
 `./build-and-deploy.sh <image_id>`
 
-The *image_id* parameter can be set to **docker**, **jenkins**, **monitor** or **repo**. In addition to that, the shell script requires the environment variable *VAGRANT_CLOUD_TOKEN*. To set it, you must have defined a [token in Vagrant Cloud](https://www.vagrantup.com/docs/vagrant-cloud/users/authentication.html#authentication-tokens). Last but not least, don't forget to install [Vagrant](https://www.vagrantup.com/downloads.html) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads)!
+:warning: The command requires a passwordless user for running successfully.
+
+The *image_id* parameter can be set to **docker**, **jenkins**, **monitor** or **repo**. In addition to that, the shell script requires the environment variable *VAGRANT_CLOUD_TOKEN*. To set it, you must have defined a [token in Vagrant Cloud](https://www.vagrantup.com/docs/vagrant-cloud/users/authentication.html#authentication-tokens). Last but not least, don't forget to install [Vagrant](https://www.vagrantup.com/downloads.html) (minimum version: [2.2.0](https://www.hashicorp.com/blog/vagrant-2-2-0)) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads)!
 
 ## Amazon Web Services AMIs
 
