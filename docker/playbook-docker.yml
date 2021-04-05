@@ -14,6 +14,11 @@
         - language-pack-pt
         - python3-pip
 
+    - name: Upgrade PIP
+      pip: 
+        name: pip
+        state: latest
+
     - name: Install required python packages
       pip:
         name: "{{ item }}"

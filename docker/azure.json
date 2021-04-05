@@ -1,0 +1,44 @@
+{
+    "variables": {
+        "azure_client_id": "{{env `AZURE_CLIENT_ID`}}",
+        "azure_client_secret": "{{env `AZURE_SECRET`}}",
+        "azure_subscription_id": "{{env `AZURE_SUBSCRIPTION_ID`}}",
+        "azure_tenant_id": "{{env `AZURE_TENANT`}}"
+    },
+    "builders": [
+        {
+            "type": "azure-arm",
+            "client_id": "{{user `azure_client_id`}}",
+            "client_secret": "{{user `azure_client_secret`}}",
+            "subscription_id": "{{user `azure_subscription_id`}}",
+            "tenant_id": "{{user `azure_tenant_id`}}",
+            "managed_image_name": "docker",
+            "managed_image_resource_group_name": "images-rg",
+            "os_type": "Linux",
+            "image_publisher": "Canonical",
+            "image_offer": "UbuntuServer",
+            "image_sku": "18.04-LTS",
+            "location": "West Europe",
+            "vm_size": "Standard_B1s"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell-local",
+            "command": "ansible-galaxy install -r requirements.yml -p roles"
+        },
+        {
+            "type": "ansible",
+            "playbook_file": "./playbook-docker.yml",
+            "host_alias": "docker",
+            "extra_arguments": [
+                "--extra-vars",
+                "ansible_python_interpreter=/usr/bin/python3"
+            ]
+        },
+        {
+            "type": "shell-local",
+            "command": "rm -rf roles *-version.txt"
+        }
+    ]
+}
